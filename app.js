@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
     res.send('Travel Planning App');
 });
 
-// Start the server
+// Start the server.
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
