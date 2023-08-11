@@ -18,6 +18,28 @@ router.get('/', (req, res) => {
         });
 });
 
+// GET all trips within a date range
+router.get('/dateRange', (req, res) => {
+    const { start, end } = req.query;
+
+    if (!start || !end) {
+        return res.status(400).json({ message: 'Start and end dates are required' });
+    }
+
+    Trip.find({
+        startDate: { $gte: new Date(start) },
+        endDate: { $lte: new Date(end) },
+        user: req.user._id
+    })
+        .then(trips => {
+            return res.json({ trips: trips });
+        })
+        .catch(error => {
+            console.log('Error:', error);
+            return res.status(500).json({ message: 'An error occurred, please try again' });
+        });
+});
+
 // GET a single trip by ID
 router.get('/:id', (req, res) => {
     Trip.findById(req.params.id)
@@ -27,6 +49,9 @@ router.get('/:id', (req, res) => {
             return res.json({ message: 'An error occurred, please try again' });
         });
 });
+
+
+
 
 // POST a new trip
 router.post('/', (req, res) => {
