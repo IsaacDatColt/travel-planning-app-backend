@@ -6,7 +6,9 @@ const TripSchema = new mongoose.Schema({
     startDate: Date,
     endDate: Date,
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    itinerary: [{ type: mongoose.Schema.Types.ObjectId, ref: 'ItineraryItem' }],
 });
+
 
 const Trip = mongoose.model('Trip', TripSchema);
 
