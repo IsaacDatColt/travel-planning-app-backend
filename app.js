@@ -45,6 +45,7 @@ app.get('/', (req, res) => {
 
 app.use('/users', require('./controllers/users'));
 app.use('/trips', require('./controllers/trips'));
+app.use('/itineraries', require('./controllers/itineraries'));
 
 
 // Start the server

@@ -1,13 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const ItineraryItem = require('../models/ItineraryItem');
+const ItineraryItem = require('../models/Itinerary');
+const Trip = require('../models/Trip');
 
 // POST a new itinerary item
 router.post('/', (req, res) => {
     const newItem = new ItineraryItem(req.body);
     newItem.save()
-        .then(item => res.json({ item: item }))
-        .catch(error => res.json({ message: 'An error occurred, please try again' }));
+        .then(item => {
+            Trip.findByIdAndUpdate(item.trip, { $push: { itinerary: item._id } }, { new: true })
+                .then(trip => res.json({ item: item }))
+                .catch(error => res.json({ message: 'An error occurred while updating the trip, please try again' }));
+        })
+        .catch(error => res.json({ message: 'An error occurred while creating the itinerary item, please try again' }));
 });
 
 // GET all itinerary items for a specific trip
